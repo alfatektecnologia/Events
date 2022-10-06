@@ -1,5 +1,8 @@
 package br.com.oliveira.emanoel.events.presentation.ui.composables
 
+import android.content.Context
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -10,9 +13,12 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositionLocalContext
+import androidx.compose.runtime.rememberCompositionContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -22,12 +28,14 @@ import br.com.oliveira.emanoel.events.presentation.ui.theme.Background
 import br.com.oliveira.emanoel.events.presentation.ui.theme.DarkGreen
 import br.com.oliveira.emanoel.events.presentation.ui.theme.LightGreen
 import br.com.oliveira.emanoel.events.utils.DateMillisConverter
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventDetail(viewModel: EventsViewModel, eventId: String?, navController: NavController) {
-
+    val event: Event? = viewModel.events.value.find { it.id.equals(eventId) }
+    val context = LocalContext.current
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = Color(DarkGreen.value),
@@ -36,7 +44,16 @@ fun EventDetail(viewModel: EventsViewModel, eventId: String?, navController: Nav
                 title = "Detalhe do evento",
                 icon = Icons.Default.ArrowBack,
                 actionIcon = Icons.Default.Share,
-                actionIconClick = {}
+                actionIconClick =
+                { if (event != null) {
+                    val intent = Intent(Intent.ACTION_SEND).apply {
+                        putExtra(Intent.EXTRA_TEXT, event.title)
+                        putExtra(Intent.EXTRA_TEXT, event.date)
+                        type = "text/plain"
+                    }
+                    context.startActivity(intent)
+                } }
+
 
             ) {
                 //onclickAction
@@ -46,7 +63,7 @@ fun EventDetail(viewModel: EventsViewModel, eventId: String?, navController: Nav
         },
         content = {
             val paddingValue = it
-            val event: Event? = viewModel.events.value.find { it.id.equals(eventId) }
+
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
@@ -149,3 +166,4 @@ fun EventDetail(viewModel: EventsViewModel, eventId: String?, navController: Nav
 
     )
 }
+
