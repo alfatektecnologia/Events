@@ -1,4 +1,4 @@
-package br.com.oliveira.emanoel.events.ui.theme
+package br.com.oliveira.emanoel.events.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
