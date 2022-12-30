@@ -1,10 +1,8 @@
 package br.com.oliveira.emanoel.events.presentation.ui.screens
 
-import android.content.Intent
 import android.util.Log
 import android.util.Patterns
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,10 +12,8 @@ import br.com.oliveira.emanoel.events.presentation.BaseApplication
 import br.com.oliveira.emanoel.events.repository.EventsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okio.IOException
 import javax.inject.Inject
 
 @HiltViewModel
